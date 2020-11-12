@@ -113,9 +113,9 @@
 > const { description } = req.body;
 > const newTodo = await pool.query(
 > "INSERT INTO todo (description) VALUES(\$1) RETURNING \* ",
-> [description]
+> [ description]
 > );
-> res.json(newTodo.rows[0]);
+> res.json(newTodo.rows[ 0]);
 > } catch (err) {
 > console.error(err.message);
 > }
@@ -138,7 +138,7 @@
 > try {
 > const { id } = req.params;
 > const todo = await pool.query("SELECT \* FROM todo WHERE todo_id = \$1", [id, ]);
-> res.json(todo.rows[0]);
+> res.json(todo.rows[ 0]);
 > } catch (err) {
 > console.error(err.message);
 > }
@@ -173,3 +173,257 @@
 > });
 
 # D) Crear el cliente
+
+1. Crear carpeta client.
+
+2. Inicializarlo.
+
+> npm init -y // este "-y" para config por defecto.
+
+3. Instalar react.
+
+> npm install react react-dom
+
+4. Hacer carpetas src y public.
+
+5. Crear archivo index.html dentro de public.
+
+> <.!DOCTYPE html>
+>
+> <.html lang="en">
+>
+> <.head>
+>
+> <.meta charset="UTF-8" />
+>
+> <.meta name="viewport" content="width=device-width, initial-scale=1.0" />
+>
+> <.title>App de tareas<./title>
+>
+> <./head>
+>
+> <.body>
+>
+> <.div id="root"><./div>
+>
+> <./body>
+>
+> <./html>
+
+6. Crear index.js en src.
+
+> import React from 'react';
+>
+> import ReactDOM from 'react-dom';
+>
+> import App from './App';
+>
+> ReactDOM.render(<.App/>, document.getElementById('root'));
+
+7. Crear App.jsx y App.css (vacío) en la misma ruta.
+
+- App.jsx
+
+> import React from "react";
+>
+> import "./App.css";
+>
+> export default function App() {
+> return <.div><./div>;
+> }
+
+8. Instalar webpack.
+
+> npm i webpack webpack-cli -D
+
+9. Crear archivo webpack.config.js en client.
+
+> const path = require("path");
+>
+> module.exports = {
+>
+> entry: "./src/index.js",
+>
+> output: {
+>
+>     filename: "bundle.[h ash].js",
+>
+>     path: path.resolve(__dirname, "dist"),
+>
+> },
+>
+> mode: "production",
+>
+> };
+
+10. Setear script build en package.json.
+
+> "scripts": {
+>
+> "build": "webpack"
+>
+> },
+
+11. Instalar babel.
+
+> npm i @babel/core @babel/preset-env @babel/preset-react babel-loader style-loader css-loader -D
+
+12. Configurar loaders en webpack.config.js.
+
+> mode: "production",
+>
+> module: {
+>
+> rules: [
+>
+> {
+>
+> test: /\ .(js|jsx)\$/,
+>
+>        use: "babel-loader",
+>
+>        exclude: /node_modules/,
+>
+>       resolve: {
+>
+>           extensions: [".js",".jsx"],
+>
+>        },
+>
+>      },
+>
+>      {
+>
+>        test: /\ .css$/,
+>
+> use: ["style-loader", "css-loader"],
+>
+> },
+>
+> ],
+>
+> },
+
+13. Crear archivo de configuracion de babel en client(babel.config.json).
+
+> {
+> "presets": ["@babel/env", "@babel/react"]
+> }
+
+14. Instalar plugins de babel.
+
+> npm i clean-webpack-plugin html-webpack-plugin -D
+
+15. Incluirlos en webpack.config.js.
+
+> module: {
+>
+> rules: [
+>
+>      {
+>
+>        test: /\.(js|jsx)$/,
+>
+>        use: "babel-loader",
+>
+>        exclude: /node_modules/,
+>
+>        resolve: {
+>
+>          extensions: [".js", ".jsx"],
+>
+>        },
+>
+>      },
+>
+>      {
+>
+>        test: /\.css$/,
+>
+>        use: ["style-loader", "css-loader"],
+>
+>      },
+>
+> ],
+>
+> },
+>
+> plugins: [
+>
+> new CleanWebpackPlugin(),
+>
+> new HtmlWebpackPlugin({
+>
+>      template: "./public/index.html",
+>
+> }),
+>
+> ],
+
+16. Dar soporte a navegadores antiguos (polyfill).
+
+> npm i core-js
+
+- babel.config.js
+
+> {
+>
+> "presets": [
+>
+>     ["@babel/env", { "corejs": 3.6, "useBuiltIns": "usage" }],
+>
+> "@babel/react"
+>
+> ]
+>
+> }
+
+- package.json
+
+> "devDependencies": {
+>
+> "@babel/core": "^7.12.3",
+>
+> "@babel/preset-env": "^7.12.1",
+>
+> "@babel/preset-react": "^7.12.1",
+>
+> "babel-loader": "^8.1.0",
+>
+> "clean-webpack-plugin": "^3.0.0",
+>
+> "css-loader": "^5.0.0",
+>
+> "html-webpack-plugin": "^4.5.0",
+>
+> "style-loader": "^2.0.0",
+>
+> "webpack": "^4.0.0",
+>
+> "webpack-cli": "^4.1.0"
+>
+> },
+>
+> "browsersList": "> 0.25%, not dead, not ie 11"
+
+17. Instalar webpack-dev-server para entorno dev.
+
+> npm i webpack-dev-server -D
+
+18. Crear script para npm start en package.json.
+
+> "scripts": {
+>
+> "build": "webpack",
+>
+> "start": "webpack-dev-server -d --open"
+>
+> },
+
+19. Si da error module not found de webpack cambiar las versiones de las dependencias.
+
+- package.json
+
+> "webpack": "^4.0.0",
+> "webpack-cli": "^3.3.12",
+> "webpack-dev-server": "^3.11.0"

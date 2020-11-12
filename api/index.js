@@ -4,6 +4,7 @@ const cors = require("cors");
 const pool = require("./db");
 
 // Middleware
+
 app.use(cors());
 app.use(express.json());
 
@@ -75,6 +76,6 @@ app.delete("/todo/:id", async (req, res) => {
 });
 
 // Inicializacion
-app.listen(5000, () => {
-  console.log("El servidor se encuentra corriendo en el puerto 5000");
+app.listen(3001, () => {
+  console.log("El servidor se encuentra corriendo en el puerto 3001");
 });
