@@ -9,6 +9,7 @@ export default function ListTodos() {
   });
 
   const ENDPOINT = "http://localhost:3001";
+  const HEROKU = "https://pern-valenfontana7.herokuapp.com"
   let switcher = "production"
 
   const handleInputChange = (e, id) => {
@@ -24,7 +25,7 @@ export default function ListTodos() {
     try {
       const { description } = todo;
       const body = { description: description };
-      const response = await fetch(`${switcher !== "production" ? ENDPOINT : ""}/todos`, {
+      const response = await fetch(`${switcher !== "production" ? ENDPOINT : HEROKU}/todos`, {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(body),
@@ -43,14 +44,14 @@ export default function ListTodos() {
   };
 
   useEffect(async () => {
-    const response = await fetch(`${switcher !== "production" ? ENDPOINT : ""}/todos`);
+    const response = await fetch(`${switcher !== "production" ? ENDPOINT : HEROKU}/todos`);
     const jsonData = await response.json();
     await setAllTodos(jsonData);
   }, []);
 
   const deleteTodo = async (id) => {
     try {
-      const response = await fetch(`${switcher !== "production" ? ENDPOINT : ""}/todo/` + id, {
+      const response = await fetch(`${switcher !== "production" ? ENDPOINT : HEROKU}/todo/` + id, {
         method: "DELETE",
         headers: { "Content-type": "application/json" },
       });
@@ -71,7 +72,7 @@ export default function ListTodos() {
     try {
       const body = { description: editTodo.description };
       const response = await fetch(
-        `${switcher !== "production" ? ENDPOINT : ""}/todo/` + editTodo.todo_id,
+        `${switcher !== "production" ? ENDPOINT : HEROKU}/todo/` + editTodo.todo_id,
         {
           method: "PUT",
           headers: { "Content-type": "application/json" },
