@@ -26,9 +26,15 @@ module.exports = {
     ],
   },
   plugins: [
-    new CleanWebpackPlugin(),
+    
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
+  //new CleanWebpackPlugin(),
   ],
+  devServer: {
+    hot: true,
+    compress: true,
+    port: 3000
+  }
 };

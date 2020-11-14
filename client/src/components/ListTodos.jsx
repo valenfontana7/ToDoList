@@ -8,6 +8,8 @@ export default function ListTodos() {
     description: "",
   });
 
+  const ENDPOINT = "http://localhost:3001";
+
   const handleInputChange = (e, id) => {
     setTodo({
       ...todo,
@@ -21,7 +23,7 @@ export default function ListTodos() {
     try {
       const { description } = todo;
       const body = { description: description };
-      const response = await fetch("http://localhost:3001/todos", {
+      const response = await fetch(`${ENDPOINT}/todos`, {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(body),
@@ -40,14 +42,14 @@ export default function ListTodos() {
   };
 
   useEffect(async () => {
-    const response = await fetch("http://localhost:3001/todos");
+    const response = await fetch(`${ENDPOINT}/todos`);
     const jsonData = await response.json();
     await setAllTodos(jsonData);
   }, []);
 
   const deleteTodo = async (id) => {
     try {
-      const response = await fetch("http://localhost:3001/todo/" + id, {
+      const response = await fetch(`${ENDPOINT}/todo/` + id, {
         method: "DELETE",
         headers: { "Content-type": "application/json" },
       });
@@ -68,7 +70,7 @@ export default function ListTodos() {
     try {
       const body = { description: editTodo.description };
       const response = await fetch(
-        "http://localhost:3001/todo/" + editTodo.todo_id,
+        `${ENDPOINT}/todo/` + editTodo.todo_id,
         {
           method: "PUT",
           headers: { "Content-type": "application/json" },
